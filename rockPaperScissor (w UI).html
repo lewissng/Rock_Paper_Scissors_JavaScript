@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Rock Paper Scissor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <p>Rock Paper or Scissor, best of 5 rounds.</p>
+        <button id="rock" type="button">Rock</button>
+        <button id="paper" type="button">Paper</button>
+        <button id="scissor" type="button">Scissor</button>
+        <p id="cpuScore">Computer: 0</p>
+        <p id=playerScore>Player: 0</p>
+
+    </div>
+    <script>
+
+        //initiate random rock paper scissor selection for computer
+        function computerPlay() {
+            const rockPaperScissor = ["Rock", "Paper", "Scissor"];
+            const random = Math.floor(Math.random() * rockPaperScissor.length);
+            const randomThrow = rockPaperScissor[random];
+            return randomThrow;
+        }
+
+        //win lose counters
+        let win = 0;
+        let lose = 0;
+
+
+
+
+        //initiate one round of rock paper scissor
+        function playRound(playerSelection, computerSelection) {
+            let result;
+
+            if (computerSelection == "Rock") {
+                result = rockCheck(playerSelection);
+            } else if (computerSelection == "Paper") {
+                result = paperCheck(playerSelection);
+            } else if (computerSelection == "Scissor") {
+                result = scissorCheck(playerSelection);
+            }
+            return result;
+
+        }
+
+
+
+
+        //check players selection against computers rock selection
+        function rockCheck(playerThrow) {
+            let result;
+
+            if (playerThrow == "scissor") {
+                result = "You lose, Rock beats scissor";
+                lose++;
+            } else if (playerThrow == "paper") {
+                result = "You win, Paper beats rock";
+                win++;
+            } else {
+                result = "Draw"
+            }
+            return result;
+
+        }
+
+        //check players selection against computers paper selection
+        function paperCheck(playerThrow) {
+            let result;
+
+            if (playerThrow == "scissor") {
+                result = "You win, Scissor beats paper";
+                win++;
+            } else if (playerThrow == "rock") {
+                result = "You lose, Paper beats rock";
+                lose++;
+            } else {
+                result = "Draw"
+            }
+            return result;
+
+        }
+
+        //Check players selection against computers scissor selection
+        function scissorCheck(playerThrow) {
+            let result;
+
+            if (playerThrow == "rock") {
+                result = "You win, Rock beats scissor";
+                win++;
+            } else if (playerThrow == "paper") {
+                result = "You lose, Scissor beats paper";
+                lose++;
+            } else {
+                result = "Draw"
+            }
+            return result;
+
+        }
+
+        //initiate game of 5 round of rock paper scissor
+        function game() {
+
+            const playerSelection = playerChoice;
+            const computerSelection = computerPlay();
+            //console.log("conputer throws " + computerSelection);
+            console.log(playRound(playerSelection, computerSelection));
+        }
+
+
+        const result = document.createElement('div');
+        const container = document.querySelector('#wrapper');
+        container.appendChild(result);
+
+        const cpuScore = document.querySelector('#cpuScore');
+        const playerScore = document.querySelector('#playerScore');
+
+        let rounds = 1;
+
+        function gameResult() {
+            if (rounds == 1) {
+                container.removeChild(result);
+
+            }
+
+
+            if (rounds < 5) {
+                rounds++
+
+                cpuScore.textContent = "Computer: " + lose;
+                playerScore.textContent = "Player: " + win;
+
+
+            } else {
+                if (win > lose) {
+                    result.textContent = "You won the game";
+                    container.appendChild(result);
+
+                    cpuScore.textContent = "Computer: " + lose;
+                    playerScore.textContent = "Player: " + win;
+
+                    rounds = 1;
+                    win = 0;
+                    lose = 0;
+
+
+                } else if (lose > win) {
+                    result.textContent = "You lose the game";
+                    container.appendChild(result);
+
+                    cpuScore.textContent = "Computer: " + lose;
+                    playerScore.textContent = "Player: " + win;
+
+                    rounds = 1;
+                    win = 0;
+                    lose = 0;
+                } else if (win == lose) {
+                    result.textContent = "Its a tie";
+                    container.appendChild(result);
+
+                    cpuScore.textContent = "Computer: " + lose;
+                    playerScore.textContent = "Player: " + win;
+
+                    rounds = 1;
+                    win = 0;
+                    lose = 0;
+                }
+            }
+        }
+
+
+
+
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                playerChoice = button.id;
+                game();
+                gameResult();
+            });
+        });
+
+
+
+    </script>
+</body>
+
+</html>
